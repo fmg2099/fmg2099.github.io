@@ -1,0 +1,40 @@
+{
+	"story_title":"Un título interesante",
+	"story_subtitle":"Una historia de intriga, pasión y drama.",
+	"instr":"Esta es una historia interactiva. Deberás elegir las acciones según se vaya desenvolviendo la historia, lo cual puede derivar en distintos finales. <br>¡Trata de encontrarlos todos!",
+	"instr_button":"COMENZAR",
+	"story_nodes":[
+		{"id":0, "next":[1,2,3],
+		"text":"Es una tarde lluviosa de marzo. Paco, nuestro protagonista, despierta en una oscura habitación de una vieja casa de playa. No recuerda cómo llegó ahí. observa a su alrededor y nota una mesa con una llave. De repente, un sonido seco proveniente de la chimenea le deja ver que hay una caja dentro de la chimenea."},
+		{"id":1, "next":4,
+		"text":"Paco abre la caja con la llave que acabas de encontrar."},
+		{"id":2, "next":5,
+		"text":"Paco se asoma por la chimenea para buscar el origen del misterioso sonido."},
+		{"id":3, "next":6,
+		"text":"Paco espera a ver si se repite el ruido."},
+		{"id":4, "next":[7,8],
+		"text":"La caja está cubierta de una gruesa capa de polvo, a la cual Paco sopla y nota una extraña inscripción. Mete la llave en la cerradura, con cuidado levanta la tapa y dentro encuentra algo tan horrible que provoca un ataque de locura al pobre Paco."},
+		{"id":5 , "next":[9,10],
+		"text":"Al meter la cabeza en la chimenea, nuestro protagonista nota una corriente de aire. Algo le dice a Paco que desista, por lo que rápidamente se aleja de la chimenea. Un sonido metálico se escucha, es una pesada caja fuerte que cae estruendosamente por la garganta de la chimenea. Al caer, se levanta una gruesa capa de polvo y ceniza. Horrorizado, Paco huye hacia la playa."},
+		{"id":6 , "next":[9,10],
+		"text":"Paco espera. De repente, escucha pasos en el piso superior."},
+		{"id":7,"next":11,
+		"text":"Desquiciado, Paco se arroja por una ventana"},
+		{"id":8,"next":12,
+		"text":"Paco se arrodilla y aunque no era religioso, se pone a rezar."},
+		{"id":9 ,"next":12,
+		"text":"Paco abre la puerta y sale corriendo desesperado hacia el exterior."},
+		{"id":10 ,"next":13,
+		"text":"10"},
+		{"id":11 ,"next":14,
+		"text":"A lo lejos, Paco nota el par de luces de un camión. Desesperado le hace señas para que detenga su marcha. El conductor le permite subir y Paco emite un suspiro de tranquilidad hasta que nota un tatuaje en el brazo del camionero, Es el mismo símbolo que estaba rayado en la mesa de la casa."},
+		{"id":12 ,"next":14,
+		"text":"Corre Paco, alejándose lo más posible de la casa. Siendo una noche sin luna y sin luz que lo guiara, Paco cae de un acantilado. Su cuerpo golpea las piedras costeras, causándole la muerte."},
+		{"id":13 ,"next":14,
+		"text":"Final siniestro"},
+		{"id":14 ,
+		"text":"FIN"}
+
+	]
+}
+
