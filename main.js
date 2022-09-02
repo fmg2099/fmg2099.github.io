@@ -76,30 +76,37 @@ window.onload=function(){
 
 function onStartButton()
 {
-	console.log("cuac");
 	btnOption1.onclick=null;
 	currentNode=0;
 	//ahora si rellenar historia y primeras opciones
 	textmain.innerHTML = storydata.story_nodes[currentNode].text;
 	btnPanel.xshow(false);
 	nextNodes=storydata.story_nodes[currentNode].next;
-	//console.log(nextNodes);
-	btnOption1.setText( storydata.story_nodes[nextNodes[0]].text);
-	btnOption1.xshow(true);
-	btnOption1.onclick=onButton;
-	if( storydata.story_nodes[currentNode].next[1] !== undefined ){
-		btnOption2.setText( storydata.story_nodes[nextNodes[1]].text);
-		btnOption2.xshow(true);
-		btnOption2.onclick=onButton;
+	if(Array.isArray(nextNodes))
+	{
+		//console.log(nextNodes);
+		btnOption1.setText( storydata.story_nodes[nextNodes[0]].text);
+		btnOption1.xshow(true);
+		btnOption1.onclick=onButton;
+		if( storydata.story_nodes[currentNode].next[1] !== undefined ){
+			btnOption2.setText( storydata.story_nodes[nextNodes[1]].text);
+			btnOption2.xshow(true);
+			btnOption2.onclick=onButton;
+		}
+		if( storydata.story_nodes[currentNode].next[2] !== undefined ){
+			btnOption3.setText( storydata.story_nodes[nextNodes[2]].text);
+			btnOption3.xshow(true);
+			btnOption3.onclick=onButton;
+		}
 	}
-	if( storydata.story_nodes[currentNode].next[2] !== undefined ){
-		btnOption3.setText( storydata.story_nodes[nextNodes[2]].text);
-		btnOption3.xshow(true);
-		btnOption3.onclick=onButton;
+	else //nextnodes es un numero, solo se debe mostrar un boton
+	{
+		btnOption1.setText( storydata.story_nodes[nextNodes].text);
+		btnOption1.xshow(true);
+		btnOption1.onclick=onButton;
 	}
-
 	const revealtimer= setTimeout( ()=>{
-		console.log("reveala");
+		console.log("reveal btn");
 		btnPanel.xshow(true);
 	}, 1000);
 }
@@ -110,10 +117,14 @@ function onButton(clickdata)
 	btnOption1.xshow(false);
 	btnOption2.xshow(false);
 	btnOption3.xshow(false);
+	btnOption1.onclick=null;
 	if(clickdata.target.parentElement == btnOption1)
 	{
 		//console.log("b1");
-		currentNode = storydata.story_nodes[nextNodes[0]].next;
+		if(Array.isArray(nextNodes))
+			currentNode = storydata.story_nodes[nextNodes[0]].next;
+		else
+			currentNode = storydata.story_nodes[nextNodes].next;
 		nextNodes=storydata.story_nodes[currentNode].next;
 	}
 	else if(clickdata.target.parentElement == btnOption2)
@@ -128,14 +139,13 @@ function onButton(clickdata)
 		currentNode=storydata.story_nodes[nextNodes[2]].next;
 		nextNodes=storydata.story_nodes[currentNode].next;
 	}
-	console.log(nextNodes);
 	textmain.innerHTML = storydata.story_nodes[currentNode].text;
-	console.log(storydata.story_nodes.length);
 	if( Array.isArray(nextNodes))
 	{
 		btnOption1.setText( storydata.story_nodes[nextNodes[0]].text);
 		btnOption1.xshow(true);
 		btnOption1.onclick=onButton;
+		//ocultar botones si no hay next 1 y 2
 		if( storydata.story_nodes[currentNode].next[1] !== undefined ){
 			btnOption2.setText( storydata.story_nodes[nextNodes[1]].text);
 			btnOption2.xshow(true);
@@ -151,16 +161,20 @@ function onButton(clickdata)
 	{
 		btnOption1.setText( storydata.story_nodes[nextNodes].text);
 		btnOption1.xshow(true);
-		btnOption1.onclick=onButton;
-	}
-	else
-	{
-		console.log("finis");
+		if(storydata.story_nodes[nextNodes].next != undefined)
+		{
+			console.log("next "+storydata.story_nodes[nextNodes].next);
+			btnOption1.onclick=onButton;
+		}
+		else
+		{
+			btnOption1.onclick=null;
+		}
+			
 	}
 
 	setTimeout( ()=>{
-		console.log("reveala");
 		btnPanel.xshow(true);
-	}, 1000);
+	}, 900 + Math.random()*200);
 }
 
