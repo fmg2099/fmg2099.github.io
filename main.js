@@ -17,7 +17,7 @@ var btnOption1, btnOption2, btnOption3;
 var imagenAdorno;
 var displayOriginal=""
 
-var debug=false
+var debug=false;
 
 function showButton( b ) 
 {  
@@ -64,7 +64,7 @@ window.onload=function(){
 
 	if(debug)
 	{
-		nextNodes=[0,16];
+		nextNodes=[0,25];
 		btnOption2.setText("directo al fin");
 		btnOption2.xshow(true);
 		btnOption2.onclick=onButton;
@@ -86,8 +86,8 @@ function onStartButton()
 	btnOption1.xshow(false);
 	btnOption2.xshow(false);
 	btnOption3.xshow(false);
-	imagenAdorno.src = "";
-	imagenAdorno.style.visibility="hidden";
+	//imagenAdorno.src = "";
+	//imagenAdorno.style.visibility="hidden";
 	btnOption1.onclick=null;
 	currentNode=0;
 	//ahora si rellenar historia y primeras opciones
@@ -159,13 +159,13 @@ function onButton(clickdata)
 	if(img!=undefined)
 	{
 		console.log("imagen "+img);
-		imagenAdorno.src = img;
-		imagenAdorno.style.visibility="visible";
+		imagenAdorno.style.backgroundImage="url("+img+")";
+		//imagenAdorno.style.visibility="visible";
 	}
 	else
 	{
-		imagenAdorno.src = "";
-		imagenAdorno.style.visibility="hidden";
+		imagenAdorno.style.backgroundImage="";
+		//imagenAdorno.style.visibility="hidden";
 	}
 
 	if( Array.isArray(nextNodes))
@@ -223,7 +223,7 @@ storydata={
 		"text":"Eres una mujer  de alrededor de 50 años. Llevas ropa de dormir y te encuentras sentada en la sala de estar de tu casa.  Tu atención se concentra en el reloj colocado a unos metros de ti.  Te das cuenta que Helena no ha regresado a casa. Ella te había dicho que iba a ir a una fiesta con una amiga, pero que regresaría a las doce.<br><br>El reloj marca las dos de la mañana."},
 		{"id":1, "next":2,
 		"text":"Siguiente"},
-		{"id":2, "next":[3,4,5],"img":"mural.jpg",
+		{"id":2, "next":[3,4,5],
 		"text":"Te levantas y comienzas a caminar en círculos. Repites en silencio la hora acordada en la que iba a llegar Helena.  Notas que unas gotas de sudor comienzan a resbalar de tu frente.  “Helena no suele llegar tan tarde, algo está pasando”, dice una voz en tu interior. Te detienes unos minutos, antes de continuar ese hilo de pensamiento. “Estoy exagerando”, dice otra voz dentro de ti, hasta que te detienes.<br><br>¿Qué haces?"},
 		{"id":3, "next":6,
 		"text":"Enciendes la cafetera."},

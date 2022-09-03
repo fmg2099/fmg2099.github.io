@@ -19,10 +19,19 @@
 		.font-inter {
 			font-family: "inter";
 		}
+		#imagen-adorno{
+			min-height:20%; max-height: 40%;
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-size: contain; 
+		}
+		.cienvh{height: auto;}
+		.min-100{min-height: 100%;}
+		.min-120{height: 1200px;}
 	</style>
 </head>
-<body class="d-flex flex-column gris-bg font-inter" style="height:100%;">
-	<div class="Layout Layout--sidebar-wide flex-1 border color-border-danger">		
+<body class="gris-bg font-inter min-120 d-flex flex-column">
+	<div class="Layout Layout--sidebar-wide flex-auto color-border-danger">		
 		<div class="Layout-sidebar border-sidebar">
 			<div class="">
 				<div class="mt-8 mb-6 m-4 d-flex flex-justify-center"><img src="title.jpg"></img></div>
@@ -30,23 +39,22 @@
 				<h2 class="p-5" id="story_tagline">subtitulo</h2>
 			</div>
 		</div>
-		<div class="Layout-main  d-flex flex-column flex-justify ">
+		<div class="Layout-main d-flex flex-column .flex-nowrap">
 			<!-- imagen o espacio-->
-			<div style="min-height:20%; max-height: 33%;" class="m-4 d-flex flex-justify-center anim-fade-in border color-border-danger">
-				<img id="imagen-adorno" src=""></img>
+			<div id="imagen-adorno" class="m-4 anim-fade-in">
 			</div>
 			<!-- cuerpo del texto principal-->
-			<div id="text-main" class="m-4 container-lg border color-border-done" >
+			<div id="text-main" class="p-4 container-lg" >
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 			</div>
 			<!-- botonera-->
-			<div id="botonera" class="d-flex flex-column flex-justify-center flex-lg-row flex-items-stretch border" style="min-height:10%;">
-				<div id="btn1" class="p-4 float-left d-flex flex-items-stretch">
+			<div id="botonera" class="flex-1 d-flex flex-column flex-justify-center flex-lg-row flex-items-start" style="min-height:10%;">
+				<div id="btn1" class="p-4 float-left d-flex flex-items-stretch ">
 					<div class="p-4 border rounded-3 color-border-btn color-shadow-medium anim-hover-grow gris-btn-bg anim-fade-in">
 					Adipiscing tristique risus nec feugiat in fermentum posuere urna
 					</div>
 				</div>
-				<div id="btn2" class="p-4 float-left d-flex flex-items-stretch">
+				<div id="btn2" class="p-4 float-left d-flex flex-items-stretch ">
 					<div class="p-4 border rounded-3 color-border-btn color-shadow-medium anim-hover-grow gris-btn-bg anim-fade-in">
 					Lacus sed turpis tincidunt id aliquet risus feugiat.
 					</div>
