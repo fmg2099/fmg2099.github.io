@@ -13,7 +13,6 @@
 var currentNode=0;
 var nextNodes;
 var textmain;
-var btnPanel;
 var btnOption1, btnOption2, btnOption3;
 var imagenAdorno;
 var displayOriginal=""
@@ -48,12 +47,11 @@ window.onload=function(){
 	//		child.style.visibility="hidden";
 	//} )
 	textmain=document.getElementById("text-main");
-	btnPanel=document.getElementById("botonera");
 	btnOption1=document.getElementById("btn1");
 	btnOption2=document.getElementById("btn2");
 	btnOption3=document.getElementById("btn3");
+	imagenAdorno=document.getElementById("imagen-adorno");
 	//metods extra
-	btnPanel.xshow = showButton;
 	btnOption1.xshow = showButton;
 	btnOption2.xshow = showButton;
 	btnOption3.xshow = showButton;
@@ -77,51 +75,58 @@ window.onload=function(){
 	document.getElementById("story_title").innerHTML=storydata.story_title;
 	document.getElementById("story_tagline").innerHTML=storydata.story_subtitle;
 	textmain.innerHTML=storydata.instr;
-	btnOption1.xshow(true);
 	btnOption1.setText(storydata.instr_button);
 	btnOption1.onclick=onStartButton;
+	btnOption1.xshow(true);
 }
 
 function onStartButton()
 {
+	sb1=sb2=sb3=false;
+	btnOption1.xshow(false);
+	btnOption2.xshow(false);
+	btnOption3.xshow(false);
+	imagenAdorno.src = "";
+	imagenAdorno.style.visibility="hidden";
 	btnOption1.onclick=null;
 	currentNode=0;
 	//ahora si rellenar historia y primeras opciones
 	textmain.innerHTML = storydata.story_nodes[currentNode].text;
-	btnPanel.xshow(false);
 	nextNodes=storydata.story_nodes[currentNode].next;
 	if(Array.isArray(nextNodes))
 	{
 		//console.log(nextNodes);
 		btnOption1.setText( storydata.story_nodes[nextNodes[0]].text);
-		btnOption1.xshow(true);
+		sb1=true;
 		btnOption1.onclick=onButton;
 		if( storydata.story_nodes[currentNode].next[1] !== undefined ){
 			btnOption2.setText( storydata.story_nodes[nextNodes[1]].text);
-			btnOption2.xshow(true);
+			sb2=true;
 			btnOption2.onclick=onButton;
 		}
 		if( storydata.story_nodes[currentNode].next[2] !== undefined ){
 			btnOption3.setText( storydata.story_nodes[nextNodes[2]].text);
-			btnOption3.xshow(true);
+			sb3=true;
 			btnOption3.onclick=onButton;
 		}
 	}
 	else //nextnodes es un numero, solo se debe mostrar un boton
 	{
 		btnOption1.setText( storydata.story_nodes[nextNodes].text);
-		btnOption1.xshow(true);
+		sb1=true;
 		btnOption1.onclick=onButton;
 	}
 	const revealtimer= setTimeout( ()=>{
 		console.log("reveal btn");
-		btnPanel.xshow(true);
+		if(sb1) btnOption1.xshow(true);
+		if(sb2) btnOption2.xshow(true);
+		if(sb3) btnOption3.xshow(true);
 	}, 1000);
 }
 
 function onButton(clickdata)
 {
-	btnPanel.xshow(false);
+	sb1=sb2=sb3=false;
 	btnOption1.xshow(false);
 	btnOption2.xshow(false);
 	btnOption3.xshow(false);
@@ -134,34 +139,49 @@ function onButton(clickdata)
 		else
 			currentNode = storydata.story_nodes[nextNodes].next;
 		nextNodes=storydata.story_nodes[currentNode].next;
+		img=storydata.story_nodes[currentNode].img;
 	}
 	else if(clickdata.target.parentElement == btnOption2)
 	{
 		//console.log("b2");
 		currentNode=storydata.story_nodes[nextNodes[1]].next;
 		nextNodes=storydata.story_nodes[currentNode].next;
+		img=storydata.story_nodes[currentNode].img;
 	}
 	else if(clickdata.target.parentElement == btnOption3)
 	{
 		//console.log("b3");
 		currentNode=storydata.story_nodes[nextNodes[2]].next;
 		nextNodes=storydata.story_nodes[currentNode].next;
+		img=storydata.story_nodes[currentNode].img;
 	}
 	textmain.innerHTML = storydata.story_nodes[currentNode].text;
+	if(img!=undefined)
+	{
+		console.log("imagen "+img);
+		imagenAdorno.src = img;
+		imagenAdorno.style.visibility="visible";
+	}
+	else
+	{
+		imagenAdorno.src = "";
+		imagenAdorno.style.visibility="hidden";
+	}
+
 	if( Array.isArray(nextNodes))
 	{
 		btnOption1.setText( storydata.story_nodes[nextNodes[0]].text);
-		btnOption1.xshow(true);
+		sb1=true;
 		btnOption1.onclick=onButton;
 		//ocultar botones si no hay next 1 y 2
 		if( storydata.story_nodes[currentNode].next[1] !== undefined ){
 			btnOption2.setText( storydata.story_nodes[nextNodes[1]].text);
-			btnOption2.xshow(true);
+			sb2=true;
 			btnOption2.onclick=onButton;
 		}
 		if( storydata.story_nodes[currentNode].next[2] !== undefined ){
 			btnOption3.setText( storydata.story_nodes[nextNodes[2]].text);
-			btnOption3.xshow(true);
+			sb3=true;
 			btnOption3.onclick=onButton;
 		}
 	}
@@ -169,20 +189,25 @@ function onButton(clickdata)
 	{
 		if(storydata.story_nodes[nextNodes].fin )
 		{
-			btnOption1.onclick=onStartButton;
-			btnOption1.xshow(true);
+			//btnOption1.onclick=onStartButton;
+			btnOption1.onclick=function(){
+					location.reload();
+			}
+			sb1=true;
 			btnOption1.setText("Volver a empezar");
 		}
 		else
 		{
 			btnOption1.setText( storydata.story_nodes[nextNodes].text);
-			btnOption1.xshow(true);
+			sb1=true;
 			btnOption1.onclick=onButton;
 		}	
 	}
-
 	setTimeout( ()=>{
-		btnPanel.xshow(true);
+		console.log("boton reveal");
+		if(sb1) btnOption1.xshow(true);
+		if(sb2) btnOption2.xshow(true);
+		if(sb3) btnOption3.xshow(true);
 	}, 900 + Math.random()*200);
 }
 
@@ -198,7 +223,7 @@ storydata={
 		"text":"Eres una mujer  de alrededor de 50 años. Llevas ropa de dormir y te encuentras sentada en la sala de estar de tu casa.  Tu atención se concentra en el reloj colocado a unos metros de ti.  Te das cuenta que Helena no ha regresado a casa. Ella te había dicho que iba a ir a una fiesta con una amiga, pero que regresaría a las doce.<br><br>El reloj marca las dos de la mañana."},
 		{"id":1, "next":2,
 		"text":"Siguiente"},
-		{"id":2, "next":[3,4,5],
+		{"id":2, "next":[3,4,5],"img":"mural.jpg",
 		"text":"Te levantas y comienzas a caminar en círculos. Repites en silencio la hora acordada en la que iba a llegar Helena.  Notas que unas gotas de sudor comienzan a resbalar de tu frente.  “Helena no suele llegar tan tarde, algo está pasando”, dice una voz en tu interior. Te detienes unos minutos, antes de continuar ese hilo de pensamiento. “Estoy exagerando”, dice otra voz dentro de ti, hasta que te detienes.<br><br>¿Qué haces?"},
 		{"id":3, "next":6,
 		"text":"Enciendes la cafetera."},
@@ -216,7 +241,7 @@ storydata={
 		"text":"Tomas un abrigo, las llaves y abres la puerta.  La noche se abre frente a ti sin previo aviso. Las lámparas de la calle destilan una luz que te hace temblar y no sabes el por qué. "},
 		{"id":10 ,"next":11,
 		"text":"Siguiente"},
-		{"id":11 ,"next":12,
+		{"id":11 ,"next":12, "img":"11.avif",
 		"text":"Intentas detener a algunas personas que te encuentras en tu camino y cuando menos lo esperas, estás en una calle que no conoces. Piensas en caminar unas cuadras más, pero la idea de que Helena tal vez ya haya regresado te detiene. Así que decides volver."},
 		{"id":12 ,"next":13,
 		"text":"Regresas a casa"},
@@ -232,13 +257,13 @@ storydata={
 		"text":"<p>Estás a punto de colgar, cuando una voz te responde desde el otro lado de la línea.</p><p>—Hola, acaba de llamar al 911. ¿Cuál es su emergencia? —dice el operador con un tono que te hace sentir frío. </p><p>—Hola. Llamo porque no ha llegado mi hija Helena. Estoy muy asustada, ella no...</p><p>—¿Nombre completo de su hija? </p><p>—Oh, su nombre es Helena González. Por favor, yo no sé qué hacer y...</p><p>—Señora —interrumpe una vez más el operador —. Ante todo, tiene que conservar la calma, no se agite. ¿Cuánto tiempo lleva desaparecida su hija?</p><p>—Lleva más de tres horas. Apúrense, por favor. Ella no suele ser así. Es una chica muy centrada.</p><p>—Señora, lamentamos mucho su caso. Pero ninguna persona se puede considerar desaparecida a menos que lleve 24 horas sin contacto con algún familiar. </p><p>—Pero, ¿no me ha escuchado? Ella no suele ser así. Es una chica muy tranquila. Sólo salió de fiesta. </p><p>—Lo lamentamos mucho, pero no se puede hacer nada. Llame dentro de 24 horas.</p><p>La comunicación se interrumpe y vuelves al sonido de la línea intermitente, como un martilleo. </p>"},
 		{"id":18 ,"next":19,
 		"text":"Siguiente"},
-		{"id":19 ,"next":21,
+		{"id":19 ,"next":21,"img":"19.gif",
 		"text":"Vas al cuarto de Helena. Observas los peluches que tiene sobre su cama. Recuerdas su afán por coleccionarlos, los nombres tan ridículos que les ponía y unas lágrimas rondan por tus mejillas. <br><br>Sin darte cuenta, las horas pasan. El reloj de la sala marca las ocho de la mañana.<br><br>Desde esa hora, te das cuenta que Helena ya no va a regresar.<br><br><center><h2>FIN</h2></center>"},
 		{"id":20 ,"next":21,
 		"text":"unido con 19"},
 		{"id":21 , "fin":true,
 		"text":"<center>FIN</center>"},
-		{"id":22 ,"next":23,
+		{"id":22 ,"next":23,"img":"22.avif",
 		"text":"Recuerdas que Helena te dejó un papelito con el número de una de sus amigas sobre el buró de la sala. Corres hacia ese mueble, encuentras el papel y digitas los números."},
 		{"id":23 ,"next":24,
 		"text":"Siguiente"},
@@ -260,7 +285,7 @@ storydata={
 		"text":"Le pides a la amiga de Helena que te mande mensaje por si sabe algo de ella y te despides."},
 		{"id":32 ,"next":33,
 		"text":"Siguiente"},
-		{"id":33 ,"next":34,
+		{"id":33 ,"next":34,"img":"33.avif",
 		"text":"Te sirves un café y enciendes el televisor, pero no prestas atención a ninguno de los canales. A cada oportunidad que tienes miras hacia el reloj de la sala. Cuentas los segundos, los minutos que prontamente se transforman en otra hora en la que Helena no está aquí. Tu atención se concentra en esa rutina.<br><br>Hasta que el teléfono suena."},
 		{"id":34 ,"next":35,
 		"text":"Siguiente"},
@@ -274,7 +299,7 @@ storydata={
 		"text":"Siguiente"},
 		{"id":39 ,"next":21,
 		"text":"Miras el reloj y te das cuenta que faltan más de 12 horas para que puedas reportar a tu hija como desaparecida. Sin decir otra palabra o marcar otro número de teléfono, te sientas en la sala y esperas. <br><br>Pero en el fondo sientes que algo no está bien. Sientes que Helena ya nunca regresará.<br><br>No estás equivocada."},
-		{"id":40 ,"next":41,
+		{"id":40 ,"next":41,"img":"40.avif",
 		"text":"Terminas de teclear los dígitos en el teléfono, cuando un sonido de espera comienza a responderte del otro lado de la línea. "},
 		{"id":41 ,"next":42,
 		"text":"Siguiente"},
@@ -286,7 +311,7 @@ storydata={
 		"text":"—¿Hola? ¿Helena? Soy mamá, ¿dónde estás? —comienzas a decir, como si el buzón de voz pudiera responderte. Aunque pronto te das cuenta que no es así y prosigues —. No has llegado y no sé a quién llamar, por favor, si escuchas esto llámame, ya es muy tarde y… </p><p>La línea se pierde y quieres romper a llorar, pero no puedes. Sabes que si algo le pasó a Helena, necesitas ser fuerte. Fuerte para ti, para ella.</p><p>Entonces escuchas un ruido que proviene de fuera. Sin pensarlo corres hacia la puerta.</p><p>—¡Helena! —comienzas a gritar, cuando antes de pensarlo, ya giraste la perilla.</p><p>La puerta se abre y no puedes creer lo que estás viendo.</p>"},
 		{"id":45 ,"next":46,
 		"text":"Siguiente"},
-		{"id":46 ,"next":14,
+		{"id":46 ,"next":14,"img":"46.avif",
 		"text":"Es el gato de la vecina, que al igual que como otras noches, fue a merodear fuera de tu puerta.</p><p>Decepcionada de que no es Helena, cierras la puerta y regresas a la sala. Planeas encender la televisión, hasta que observas el reloj. Ha pasado más tiempo.</p><p>Sabes que es momento de hablarle a la policía</p>"}
 	]
 }
