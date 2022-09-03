@@ -1,10 +1,24 @@
+/*
+ This program is free software; you can redistribute it and/or modify it under the terms of the 
+ GNU General Public License as published by the Free Software Foundation; either version 2 of 
+ the License, or (at your option) any later version.
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ See the GNU General Public License for more details.
+ You should have received a copy of the GNU General Public License along with this program; 
+ if not, see <https://www.gnu.org/licenses/> or write to the Free Software Foundation, Inc., 
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
+*/
+
 var currentNode=0;
 var nextNodes;
-var storydata;
 var textmain;
 var btnPanel;
 var btnOption1, btnOption2, btnOption3;
+var imagenAdorno;
 var displayOriginal=""
+
+var debug=false
 
 function showButton( b ) 
 {  
@@ -50,28 +64,22 @@ window.onload=function(){
 	btnOption2.xshow(false);
 	btnOption3.xshow(false);
 
-	fetch("./data.json")
-	.then( response=> {
-		return response.json();
-	} )
-	.then(jsondata =>{
-		storydata=jsondata;
-		document.getElementById("story_title").style.visibility="visible";
-		document.getElementById("story_tagline").style.visibility="visible";
-		document.getElementById("story_title").innerHTML=storydata.story_title;
-		document.getElementById("story_tagline").innerHTML=storydata.story_subtitle;
-		textmain.innerHTML=storydata.instr;
-		btnOption1.xshow(true);
-		btnOption1.setText(storydata.instr_button);
-		btnOption1.onclick=onStartButton;
+	if(debug)
+	{
+		nextNodes=[0,16];
+		btnOption2.setText("directo al fin");
+		btnOption2.xshow(true);
+		btnOption2.onclick=onButton;
 	}
-		
-		);
-	//console.log(data);
-	document.getElementById("story_title").innerHTML="Hola Mundo";
-	document.getElementById("story_tagline").innerHTML="Una historia sobre queso, pan y vino";
-	document.getElementById("text-main").innerHTML="Problemas al cargar data.json";
-	//Una historia sobre queso, pan y vino.
+
+	document.getElementById("story_title").style.visibility="visible";
+	document.getElementById("story_tagline").style.visibility="visible";
+	document.getElementById("story_title").innerHTML=storydata.story_title;
+	document.getElementById("story_tagline").innerHTML=storydata.story_subtitle;
+	textmain.innerHTML=storydata.instr;
+	btnOption1.xshow(true);
+	btnOption1.setText(storydata.instr_button);
+	btnOption1.onclick=onStartButton;
 }
 
 function onStartButton()
@@ -159,22 +167,129 @@ function onButton(clickdata)
 	}
 	else if( typeof nextNodes === 'number' )
 	{
-		btnOption1.setText( storydata.story_nodes[nextNodes].text);
-		btnOption1.xshow(true);
-		if(storydata.story_nodes[nextNodes].next != undefined)
+		if(storydata.story_nodes[nextNodes].fin )
 		{
-			console.log("next "+storydata.story_nodes[nextNodes].next);
-			btnOption1.onclick=onButton;
+			btnOption1.onclick=onStartButton;
+			btnOption1.xshow(true);
+			btnOption1.setText("Volver a empezar");
 		}
 		else
 		{
-			btnOption1.onclick=null;
-		}
-			
+			btnOption1.setText( storydata.story_nodes[nextNodes].text);
+			btnOption1.xshow(true);
+			btnOption1.onclick=onButton;
+		}	
 	}
 
 	setTimeout( ()=>{
 		btnPanel.xshow(true);
 	}, 900 + Math.random()*200);
 }
+
+//This work is licensed under a Creative Commons Attribution-NonCommercial 2.0 Generic License.
+//Esta obra está bajo una Licencia Creative Commons Atribución-NoComercial 2.0 Genérica.
+storydata={
+	"story_title":"Buscando a Helena",
+	"story_subtitle":"Una experiencia interactiva sobre la desaparición de mujeres en <span style=\"color:var(--color-ansi-red-bright)\">México</span>",
+	"instr":"Buscando a Helena es una experiencia interactiva que busca retratar el infortunio que miles de madres y padres experimentan durante la desaparición de una hija.<br><br>Este juego no tiene como fin banalizar las miles de desapariciones y feminicidios que se están llevando a cabo en México.  El objetivo de esta experiencia interactiva es ilustrar las dificultades que presentan los familiares al tratar de buscar sus seres queridos y cómo esta búsqueda muchas veces es dificultada por las mismas autoridades.",
+	"instr_button":"Comienza haciendo click aquí",
+	"story_nodes":[
+		{"id":0, "next":1,
+		"text":"Eres una mujer  de alrededor de 50 años. Llevas ropa de dormir y te encuentras sentada en la sala de estar de tu casa.  Tu atención se concentra en el reloj colocado a unos metros de ti.  Te das cuenta que Helena no ha regresado a casa. Ella te había dicho que iba a ir a una fiesta con una amiga, pero que regresaría a las doce.<br><br>El reloj marca las dos de la mañana."},
+		{"id":1, "next":2,
+		"text":"Siguiente"},
+		{"id":2, "next":[3,4,5],
+		"text":"Te levantas y comienzas a caminar en círculos. Repites en silencio la hora acordada en la que iba a llegar Helena.  Notas que unas gotas de sudor comienzan a resbalar de tu frente.  “Helena no suele llegar tan tarde, algo está pasando”, dice una voz en tu interior. Te detienes unos minutos, antes de continuar ese hilo de pensamiento. “Estoy exagerando”, dice otra voz dentro de ti, hasta que te detienes.<br><br>¿Qué haces?"},
+		{"id":3, "next":6,
+		"text":"Enciendes la cafetera."},
+		{"id":4, "next":22,
+		"text":"Le marcas a una amiga de Helena"},
+		{"id":5 , "next":40,
+		"text":"Le marcas a Helena"},
+		{"id":6 , "next":[7,8],
+		"text":"Te diriges hacia la cocina. Pones agua en la cafetera y una vez que está listo el café, lo viertes en tu taza.  Notas que el café está más oscuro que  de costumbre y recuerdas que probablemente de ese color está el cielo que Helena está mirando en estos momentos. Sola, en un lugar que desconoces.<br><br>¿Qué haces?"},
+		{"id":7,"next":9,
+		"text":"Sales a buscar a tu hija"},
+		{"id":8,"next":22,
+		"text":"Le marcas a una amiga de Helena"},
+		{"id":9 ,"next":10,
+		"text":"Tomas un abrigo, las llaves y abres la puerta.  La noche se abre frente a ti sin previo aviso. Las lámparas de la calle destilan una luz que te hace temblar y no sabes el por qué. "},
+		{"id":10 ,"next":11,
+		"text":"Siguiente"},
+		{"id":11 ,"next":12,
+		"text":"Intentas detener a algunas personas que te encuentras en tu camino y cuando menos lo esperas, estás en una calle que no conoces. Piensas en caminar unas cuadras más, pero la idea de que Helena tal vez ya haya regresado te detiene. Así que decides volver."},
+		{"id":12 ,"next":13,
+		"text":"Regresas a casa"},
+		{"id":13 ,"next":14,
+		"text":"De vuelta a casa, miras una vez más el reloj. Han pasado más de tres horas desde que Helena no ha regresado."},
+		{"id":14 ,"next":15,
+		"text":"Llamas a la policía"},
+		{"id":15 ,"next":16,
+		"text":"<p>Marcas al 911 en tu teléfono. Contesta una grabadora:</p><p>“Está llamando al 911 por favor, espere un momento, un operador la atenderá.”</p><p>Pasan los instantes.</p><p>Quieres colgar, pero la ausencia de Helena te persigue. Ella no ha regresado, ¿por qué no ha regresado?</p>"},
+		{"id":16 ,"next":17,
+		"text":"Siguiente"},
+		{"id":17 ,"next":18,
+		"text":"<p>Estás a punto de colgar, cuando una voz te responde desde el otro lado de la línea.</p><p>—Hola, acaba de llamar al 911. ¿Cuál es su emergencia? —dice el operador con un tono que te hace sentir frío. </p><p>—Hola. Llamo porque no ha llegado mi hija Helena. Estoy muy asustada, ella no...</p><p>—¿Nombre completo de su hija? </p><p>—Oh, su nombre es Helena González. Por favor, yo no sé qué hacer y...</p><p>—Señora —interrumpe una vez más el operador —. Ante todo, tiene que conservar la calma, no se agite. ¿Cuánto tiempo lleva desaparecida su hija?</p><p>—Lleva más de tres horas. Apúrense, por favor. Ella no suele ser así. Es una chica muy centrada.</p><p>—Señora, lamentamos mucho su caso. Pero ninguna persona se puede considerar desaparecida a menos que lleve 24 horas sin contacto con algún familiar. </p><p>—Pero, ¿no me ha escuchado? Ella no suele ser así. Es una chica muy tranquila. Sólo salió de fiesta. </p><p>—Lo lamentamos mucho, pero no se puede hacer nada. Llame dentro de 24 horas.</p><p>La comunicación se interrumpe y vuelves al sonido de la línea intermitente, como un martilleo. </p>"},
+		{"id":18 ,"next":19,
+		"text":"Siguiente"},
+		{"id":19 ,"next":21,
+		"text":"Vas al cuarto de Helena. Observas los peluches que tiene sobre su cama. Recuerdas su afán por coleccionarlos, los nombres tan ridículos que les ponía y unas lágrimas rondan por tus mejillas. <br><br>Sin darte cuenta, las horas pasan. El reloj de la sala marca las ocho de la mañana.<br><br>Desde esa hora, te das cuenta que Helena ya no va a regresar.<br><br><center><h2>FIN</h2></center>"},
+		{"id":20 ,"next":21,
+		"text":"unido con 19"},
+		{"id":21 , "fin":true,
+		"text":"<center>FIN</center>"},
+		{"id":22 ,"next":23,
+		"text":"Recuerdas que Helena te dejó un papelito con el número de una de sus amigas sobre el buró de la sala. Corres hacia ese mueble, encuentras el papel y digitas los números."},
+		{"id":23 ,"next":24,
+		"text":"Siguiente"},
+		{"id":24 ,"next":25,
+		"text":"Comienza a sonar la línea, pero nadie responde del otro lado. Piensas que tal vez es inútil, que deberías salir, preguntar de calle en calle y...<br><br>—¿Hola? ¿Quién es? —dice la voz de una mujer joven al otro lado de la línea."},
+		{"id":25 ,"next":26,
+		"text":"Siguiente"},
+		{"id":26 ,"next":[27,31],
+		"text":"<p>—¿Eres amiga de Helena? ¿Helena está contigo? —dices en un sólo respiro, como si temieras que en cualquier momento, ella también desapareciera. </p><p>—Si no me dices quién eres voy a colgar. </p><p>—Oh, perdón, perdóname mucho —comienzas a decirle, con un dolor en el pecho que empieza a punzarte. Pero eso no te detiene—. Soy yo... la madre de Helena. Perdón por llamarte a estas horas de la noche. Pero ella no ha llegado a casa. ¿Sabes dónde está?</p><p>—Ah, Helena… </p><p>Notas como al sólo pronunciar su nombre, el tono de voz de aquella joven cambia.</p><p>— ¿Le dijo que estaba conmigo? —preguntó.</p><p>—Sí, me dijo que había ido a visitarte, que juntas iban a ir a un baile y…</p><p>—Sí, Helena y yo fuimos a una fiesta, pero eso ya tiene como tres horas. Al final, ambas nos fuimos caminos aparte. No sabría decirle algo más, señora.</p><p>—¿Sabes a qué hora fue eso? </p><p>—Mmm… —la voz de la amiga se vuelve otra vez dubitativa— No sabría decirle, tal vez como a las once o doce. No recuerdo muy bien. </p><p>—¿A las once? ¡Eso fue hace más de cuatro horas! ¡Helena ya tendría que haber llegado a casa! ¿En serio no está contigo?<br><br>Silencio."},
+		{"id":27 ,"next":28,
+		"text":"Insistes. Sabes que la amiga de Helena está ocultando algo y no te lo quiere decir."},
+		{"id":28 ,"next":29,
+		"text":"<p>—Señora, ya le dije todo. No es mi culpa que no conozca a su hija.</p><p>—¿De qué hablas? ¿Insinúas que debo saber algo? Por favor, dime, yo sólo quería...</p><p>La amiga de Helena te cuelga el teléfono.</p>"},
+		{"id":29 ,"next":30,
+		"text":"Siguiente"},
+		{"id":30 ,"next":14,
+		"text":"Te has dado cuenta que han pasado más de cuatro horas desde que Helena se fue. No responde a su teléfono y nadie sabe su paradero. No te queda otra opción."},
+		{"id":31 ,"next":33,
+		"text":"Le pides a la amiga de Helena que te mande mensaje por si sabe algo de ella y te despides."},
+		{"id":32 ,"next":33,
+		"text":"Siguiente"},
+		{"id":33 ,"next":34,
+		"text":"Te sirves un café y enciendes el televisor, pero no prestas atención a ninguno de los canales. A cada oportunidad que tienes miras hacia el reloj de la sala. Cuentas los segundos, los minutos que prontamente se transforman en otra hora en la que Helena no está aquí. Tu atención se concentra en esa rutina.<br><br>Hasta que el teléfono suena."},
+		{"id":34 ,"next":35,
+		"text":"Siguiente"},
+		{"id":35 ,"next":36,
+		"text":"<p>—¿Bueno? ¿Helena, eres tú? —preguntas con una semilla de esperanza dentro de tu pecho.</p><p>—Hola, soy yo, la amiga de Helena. Hablamos hace unos minutos.</p><p>—¿Sabes dónde está Helena? Por eso me llamaste, ¿verdad? Por favor, dime...</p><p>—No sé dónde está Helena, pero estuve preguntando. Al parecer la vieron con un chico.</p><p>—¿Un chico? Helena no tenía novio. ¿Sabes algo más?</p><p>—No, es todo lo que sé. Bueno...</p><p>—¿Qué pasa? Dime, dime por favor.</p><p>—La llevaban cargando. Estaba muy borracha.</p><p>—Pero, ¿quién es este tipo? ¿A dónde la llevó?</p><p>—No lo sé, señora. Es todo lo que pude averiguar, lo siento.</p><p>—Pero no me puedes dejar así, por favor. ¡Tienes que saber algo más de mi Helena! ¡La he estado esperando desde hace horas y...</p><p>—Señora, lo siento. No puedo hacer nada —escuchas su voz mientras dice estás palabras, sientes que realmente está apenada contigo.</p><p>Aunque no te importa. Sabes que hay algo mal. Nada cuadra con lo que ella te dijo.</p><p>Cuelgas.</p>"},
+		{"id":36 ,"next":37,
+		"text":"Llamas a la policía"},
+		{"id":37 ,"next":38,
+		"text":"Marcas el 911 en tu teléfono. Contesta una grabadora:<p>“Está llamando al 911 por favor, espere un momento, un operador la atenderá”</p><p>Pasan los instantes.</p><p>—Bueno, ¿cuál es su emergencia? —dice el operador con un tono que te hace sentir frío.</p><p>—Hola. Llamo porque no ha llegado mi hija Helena. Estoy muy asustada, ella no...</p><p>—¿Nombre completo de su hija? </p><p>—Oh, su nombre es Helena González. Por favor, yo no sé qué hacer y...</p><p>—Señora —interrumpe una vez más el operador —. Ante todo, tiene que conservar la calma, no se agite. ¿Cuánto tiempo lleva desaparecida su hija?</p><p>—Lleva más de cuatro horas. Apúrense, por favor. Ella no suele ser así. Es una chica muy centrada.</p><p>—Señora, lamentamos mucho su caso. Pero ninguna persona se puede considerar desaparecida a menos que lleve 24 horas sin contacto con algún familiar.</p><p>—¿No me ha escuchado? Ella no suele ser así. Justo hablé con una de sus amigas. ¡Dice que un tipejo se la llevó cargando a no sé dónde! Por favor, haga algo.</p><p>—Señora, no pierda la calma. Seguramente se fue con el novio. Muchas jovencitas hacen eso.</p><p>—¡Ella no tenía ningún novio! De ser así, me lo hubiera dicho.</p><p>—No podemos hacer nada hasta que pasen 24 horas. Lo sentimos, pero así es el protocolo. Llame dentro de 24 horas.</p><p>—No, por favor. ¡Hagan algo! ¡Deben hacer algo!</p><p>—Lo sentimos, señora.</p><p>El operador cuelga y vuelves al sonido de la línea intermitente, como un martilleo.</p>"},
+		{"id":38 ,"next":39,
+		"text":"Siguiente"},
+		{"id":39 ,"next":21,
+		"text":"Miras el reloj y te das cuenta que faltan más de 12 horas para que puedas reportar a tu hija como desaparecida. Sin decir otra palabra o marcar otro número de teléfono, te sientas en la sala y esperas. <br><br>Pero en el fondo sientes que algo no está bien. Sientes que Helena ya nunca regresará.<br><br>No estás equivocada."},
+		{"id":40 ,"next":41,
+		"text":"Terminas de teclear los dígitos en el teléfono, cuando un sonido de espera comienza a responderte del otro lado de la línea. "},
+		{"id":41 ,"next":42,
+		"text":"Siguiente"},
+		{"id":42 ,"next":[4,43],
+		"text":"<p>Un tintineo.</p><p>Piensas que ésta no sería la primera vez que Helena  tarda en comunicarse.</p><p>Dos tintineos. </p><p>Ya lo ha hecho otras veces, todas las jovencitas lo hacen.</p><p>Tres tintineos. </p><p>Cuando me conteste no me voy a enojar, todas hemos estado allí alguna vez… </p><p>Cuatro tintineos. </p><p>Ella es así, siempre ha sido así y nunca le ha importado lo que piensen los demás.</p><p>Cinco tintineos.</p><p>A veces podría decir que es una soberbia, una arrogante, no le importa lo que yo sienta.</p><p>Seis tintineos. </p><p>Espero se encuentre bien.</p><p>Siete tintineos. </p><p>¡Puta madre, que contestes!</p><p>SILENCIO</p><p>Se escucha la voz de buzón de voz: Hola, soy Helena. Si escuchas esto déjame un mensaje y no tardaré en llamarte de vuelta.</p>"},
+		{"id":43 ,"next":44,
+		"text":"Dejas un mensaje de voz"},
+		{"id":44 ,"next":45,
+		"text":"—¿Hola? ¿Helena? Soy mamá, ¿dónde estás? —comienzas a decir, como si el buzón de voz pudiera responderte. Aunque pronto te das cuenta que no es así y prosigues —. No has llegado y no sé a quién llamar, por favor, si escuchas esto llámame, ya es muy tarde y… </p><p>La línea se pierde y quieres romper a llorar, pero no puedes. Sabes que si algo le pasó a Helena, necesitas ser fuerte. Fuerte para ti, para ella.</p><p>Entonces escuchas un ruido que proviene de fuera. Sin pensarlo corres hacia la puerta.</p><p>—¡Helena! —comienzas a gritar, cuando antes de pensarlo, ya giraste la perilla.</p><p>La puerta se abre y no puedes creer lo que estás viendo.</p>"},
+		{"id":45 ,"next":46,
+		"text":"Siguiente"},
+		{"id":46 ,"next":14,
+		"text":"Es el gato de la vecina, que al igual que como otras noches, fue a merodear fuera de tu puerta.</p><p>Decepcionada de que no es Helena, cierras la puerta y regresas a la sala. Planeas encender la televisión, hasta que observas el reloj. Ha pasado más tiempo.</p><p>Sabes que es momento de hablarle a la policía</p>"}
+	]
+}
+
+
 

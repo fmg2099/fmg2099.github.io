@@ -8,60 +8,60 @@
 	<script src="main.js"></script>
 	<style>
 		.color-done-muted-bg{background-color:var(--color-done-muted) !important}
+		.gris-bg{background-color: #dfdfdf;}
+		.gris-btn-bg{background-color: #d4d4d4;}
+		.color-border-btn{border-color: #98a8a8 !important}
+		.border-sidebar{border-right: 3px solid; border-color: #444;}
+		@font-face {
+ 		   font-family: "inter";
+    		src: url("inter.ttf");
+		}
+		.font-inter {
+			font-family: "inter";
+		}
 	</style>
 </head>
-<body class="d-flex flex-column color-bg-done" style="height:100%;">
-	<div id="header" class="p-5 text-center font-bold">
-		<h1 id="story_title">titulo</h1>
-		<h2 id="story_tagline">subtitulo</h2>
-	</div>
-
-	<div class="Layout Layout--sidebar-narrow flex-1">		
-		<div class="Layout-sidebar color-bg-done-emphasis">
-			<div class="mt-5 ml-4 color-fg-on-emphasis">
-				<p>
-					Menu lateral
-				</p>
-				<p>
-					Done Colored Text
-				</p>
-				<p>
-					Open Colored Text
-				</p>
-				<p>
-					Closed Colored Text
-				</p>
+<body class="d-flex flex-column gris-bg font-inter" style="height:100%;">
+	<div class="Layout Layout--sidebar-wide flex-1">		
+		<div class="Layout-sidebar border-sidebar">
+			<div class="">
+				<div class="mt-8 mb-6 m-4 d-flex flex-justify-center"><img src="title.jpg"></img></div>
+				<h1 id="story_title" class="text-italic text-center">titulo</h1>
+				<h2 class="p-5" id="story_tagline">subtitulo</h2>
 			</div>
 		</div>
-		<div class="Layout-main color-bg-done">
+		<div class="Layout-main  d-flex flex-column flex-justify ">
+			<!-- imagen o espacio-->
+			<div style="min-height:20%; max-height: 33%;" class="m-4 d-flex flex-justify-center">
+				<img id="imagen-adorno" src=""></img>
+			</div>
 			<!-- cuerpo del texto principal-->
-			<div id="text-main" class="p-4 anim-fade-in" >
+			<div id="text-main" class="p-4 pt-8 container-lg anim-fade-in" >
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 			</div>
 			<!-- botonera-->
-			<div id="botonera" class="p-4 d-flex flex-column flex-justify-center flex-lg-row flex-items-stretch anim-fade-in" >
+			<div id="botonera" class="p-4 pt-8 d-flex flex-column flex-justify-center flex-lg-row flex-items-stretch anim-fade-in " >
 				<div id="btn1" class="px-4  float-left d-flex flex-items-stretch">
-					<div class="p-4 border rounded-3 color-border-accent color-shadow-medium anim-hover-grow color-done-muted-bg">
+					<div class="p-4 border rounded-3 color-border-btn color-shadow-medium anim-hover-grow gris-btn-bg">
 					Adipiscing tristique risus nec feugiat in fermentum posuere urna
 					</div>
 				</div>
 				<div id="btn2" class="px-4  float-left d-flex flex-items-stretch">
-					<div class="p-4 border rounded-3 color-border-accent color-shadow-medium anim-hover-grow color-done-muted-bg">
+					<div class="p-4 border rounded-3 color-border-btn color-shadow-medium anim-hover-grow gris-btn-bg">
 					Lacus sed turpis tincidunt id aliquet risus feugiat.
 					</div>
 				</div>
 				<div id="btn3" class="px-4  float-left d-flex flex-items-stretch">
-					<div class="p-4 border rounded-3 color-border-accent color-shadow-medium anim-hover-grow color-done-muted-bg">
+					<div class="p-4 border rounded-3 color-border-btn color-shadow-medium anim-hover-grow gris-btn-bg">
 					Enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra.
 					</div>
 				</div>
 			</div>
 		</div>
 		
-	</div>
-		
+	</div>	
 	<div class="p-4 text-center">
-		<p class="h6 text-light">Licencia y otros datos</p>
+		<p class="h6 text-light"><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a><br />Esta obra está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Licencia Creative Commons Atribución-NoComercial 4.0 Internacional</a>. </p>
 	</div>
 </body>
 </html>
